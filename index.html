@@ -7,13 +7,32 @@
     <title>Vue</title>
 
     <style>
-        .box{
-            padding: 100px 0;
-            width: 400px;
-            text-align: center;
-            background: #ddd;
-            margin: 20px;
-            display: inline-block;
+        body{
+            background: #eee;
+            max-width: 960px;
+            margin: 20px auto;
+        }
+        p, h3, ul{
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            /* li前的小圆点图标 */
+            list-style-type: none;
+            background: #fff;
+            margin: 20px 75px;
+            padding: 10px 25px;
+            border-radius: 10px;
+            display: flex;
+            /* 这个标签内所有元素的排列 */
+            align-items: center;
+            /* 属性定义了浏览器之间，如何分配顺着弹性容器主轴(或者网格行轴) 的元素之间及其周围的空间 */
+            justify-content: space-between;
+        }
+
+        li.fav{
+            background:lightcoral;
+            color: white;
         }
     </style>
 
@@ -22,37 +41,30 @@
     <h1>hello, vue!</h1>
 
     <div id="app">
+        <!-- attribute binding -->
+        <!-- 在html标签中添加属性 -->
+        <!-- v-bind:href 或者 :href 都可以 -->
+        <a v-bind:href="url">{{ filteredAnimes }}</a>
+
         <div v-if="showAnime">
-            <p>{{title}} - {{author}} - {{date}}</p>
-        </div>
-        
-        <button v-on:click="author = 'me'"><span>change author</span></button>
-        <button v-on:click="author = 'A-1 pictures'"><span>change author</span></button>
-
-        <div @click="changeTitle('ginntama')">changetitle</div>
-
-        <button @click="toggleAnime">
-            <span v-if='!showAnime'>show Anime</span>
-            <span v-else>hide Anime</span>
-        </button>
-        
-        <!-- difference with v-show -->
-        <!-- 并不改变原始html结构 -->
-        <div v-show="showAnime">
-            <p>{{title}} - {{author}} - {{date}}</p>
+            <ul>
+                <!-- 添加class属性 -->
+                <!-- :class传入字典，key表示属性名，value代表是否 -->
+                <li v-for="anime in animes" :class="{ fav: anime.isFav }" @click='toggleFav(anime)' >
+                    <!-- 图片显示宽度相同 -->
+                    <img :src="anime.img" :alt="anime.title" width="100">
+                    <h3>{{anime.title}}</h3>
+                    <p>{{anime.author}}</p>
+                </li>
+            </ul>
         </div>
 
         <br>
 
-        <!-- mouse event -->
-        <!-- 第一个数字默认为event事件,其余为输入参数 -->
-        <div class="box" @mouseover="handleEvent($event, 5)">mouseover</div>
-        <div class="box" @mouseleave="handleEvent">mouse leave</div>
-        <div class="box" @dblclick="handleEvent">double click</div>
-        <div class="box" @mousemove="handleMousemove">
-            <p>mousemove-x:{{x}}</p>
-            <p>mousemove-y:{{y}}</p>
-        </div>
+        <button @click="toggleAnimes">
+            <span v-if='!showAnime'>show Anime</span>
+            <span v-else>hide Anime</span>
+        </button>
 
     </div>
 

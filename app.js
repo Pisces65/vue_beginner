@@ -5,34 +5,38 @@ const app = Vue.createApp({
     //函数格式
     data() {
         return{
+            url: 'https://www.google.com',
             showAnime: true,
-            title: '未闻花名',
-            author: 'A-1 pictures',
-            date: '2012.10.10',
-            x: 0,
-            y: 0
+            animes:[
+                {title: 'さよなら私のクラマー', author: '新川直司', img: 'assets/さよなら私のクラマー.jpg', isFav: false},
+                {title: 'ワンダーエッグ・プライオリティ', author: '野島伸司', img: 'assets/ワンダーエッグ・プライオリティ.jpg', isFav: true},
+                {title: 'スーパーカブ', author: 'トネ・コーケン', img: 'assets/スーパーカブ.jpg', isFav: false}
+            ]
         }
     },
 
+    //修改datan内部数据
     methods: {
-        changeTitle(title) {
-            //this.title = 'Darling in the Franxx';
-            this.title = title;
-        },
-        toggleAnime(){
+        toggleAnimes(){
             this.showAnime = !this.showAnime
         },
-        handleEvent(e, data){
-            console.log(e.type);
-            if(data){
-                console.log(data);
-            }
-        },
-        handleMousemove(e){
-            this.x = e.offsetX;
-            this.y = e.offsetY;
+        toggleFav(anime){
+            anime.isFav = !anime.isFav
+        }
+    },
+
+    //对data内部数据计算并输出
+    //在html用法和data类似
+    computed: {
+        filteredAnimes(){
+            //js array 语法
+            //对每一个元素进行true，false判断，然后返回true的元素
+            let filteredAnimes = this.animes.filter((anime) => anime.isFav);
+            return filteredAnimes
         }
     }
-});
+
+})
+
 
 app.mount('#app');
